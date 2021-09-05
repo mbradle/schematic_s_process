@@ -1,0 +1,8 @@
+--network_xml ../../nucnet-tools-code/data_pub/my_net.xml
+--zone_xml ../../nucnet-tools-code/data_pub/Lodders.xml
+--nuc_xpath "[z <= 92]"
+--t9_0 0.02
+--norm_abunds true
+--rho_0 2.e1
+--xml_steps 5
+--t_end 9.45e17
