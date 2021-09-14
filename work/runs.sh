@@ -1,3 +1,76 @@
+margs=1
+
+function example {
+    echo -e "example: $0 --model model1\n"
+}
+
+function usage {
+    echo -e "usage: $0 MANDATORY [OPTION]\n"
+}
+
+function help {
+  usage
+    echo -e "MANDATORY:"
+    echo -e "  --model  VAL  The output subdirectory"
+    echo -e "OPTION:"
+    echo -e "  --out_dir  VAL  The output directory (output)"
+    echo -e "  -h, --help  Prints this help\n"
+  example
+}
+
+function margs_precheck {
+	if [ $2 ] && [ $1 -lt $margs ]; then
+		if [ $2 == "--help" ] || [ $2 == "-h" ]; then
+			help
+			exit
+		else
+	    	usage
+			example
+	    	exit 1 # error
+		fi
+	fi
+}
+
+function margs_check {
+	if [ $# -lt $margs ]; then
+	    usage
+	  	example
+	    exit 1 # error
+	fi
+}
+
+margs_precheck $# $1
+
+# Args while-loop
+
+out_dir=output
+
+while [ "$1" != "" ];
+do
+   case $1 in
+   --model )  shift
+              model=$1
+              ;;
+   --out_dir )  shift
+              out_dir=$1
+              ;;
+   -h   | --help )        help
+                          exit
+                          ;;
+   *)                     
+                          echo "$script: illegal option $1"
+                          usage
+						  example
+						  exit 1 # error
+                          ;;
+    esac
+    shift
+done
+
+# Mandatory paramter check
+
+margs_check ${model}
+
 # Clone the necessary codes.
 
 if [[ ! -d wn_user ]]
@@ -27,8 +100,7 @@ git checkout develop
 
 # Set key data
 
-output=output/model
-tau_0=0.3
+output=${out_dir}/$model
 
 # Download the data.
 
@@ -47,5 +119,11 @@ cd ../he_burning
 # Run the s process
 
 cd ../s-process
-./run.sh ${output} ${tau_0}
+./run.sh ${output}
 
+# Tar and zip model
+
+cd ../..
+cd ${out_dir}
+tar cvf ${model}.tar ${model}/h_burning/out.xml ${model}/he_burning/out.xml ${model}/s-process/out.xml
+gzip ${model}.tar

@@ -4,9 +4,9 @@ import wnutils.xml as wx
 import matplotlib.pyplot as plt
 
 if len(sys.argv) != 4:
-    print('Usage: python ', sys.argv[0], 'input_file output_file')
-    print('\n  input_file = input xml file')
-    print('\n  tau_0 = average tau')
+    print('\nUsage: python ', sys.argv[0], 'input_file output_file')
+    print('  input_file = input xml file')
+    print('  tau_0 = average tau')
     print('  output_file = output xml file with averaged abundances\n')
     exit()
 
