@@ -13,7 +13,7 @@ The output will be in the user-defined directory (default is *output*)
 and model subdirectory.
 
 The directory also includes a *pbs* script.  If your system supports this,
-you can run
+you can run, for example,
 
 **qsub -v model=model1,out_dir=my_output job.pbs**
 

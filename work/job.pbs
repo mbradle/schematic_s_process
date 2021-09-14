@@ -1,9 +1,14 @@
 #!/bin/bash
 
-#PBS -N mainline-nucleosynthesis
+#PBS -N simple_s_process
 #PBS -l select=1:ncpus=32:mem=64gb:ngpus=1:gpu_model=v100
 #PBS -l walltime=16:00:00
 #PBS -j oe
 
 cd $PBS_O_WORKDIR
-./runs.sh --model ${model}
+if [ -z "${out_dir}" ]
+then
+    ./runs.sh --model ${model}
+else
+    ./runs.sh --model ${model} --out_dir ${out_dir}
+fi
