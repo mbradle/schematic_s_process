@@ -87,6 +87,10 @@ else
    git -C single_zone pull
 fi
 
+# Save home directory
+
+HOME=`pwd`
+
 # Set the includes and make the code.
 
 cd wn_user
@@ -106,27 +110,24 @@ output=${out_dir}/$model
 
 make data
 
-# Run hydrogen burning
+# Run stages
 
-cd ../input/h_burning
-cp run.rsp ${output}/h_burning
-./run.sh ${output}
-
-# Run helium burning
-
-cd ../he_burning
-cp run.rsp ${output}/he_burning
-./run.sh ${output}
-
-# Run the s process
-
-cd ../s-process
-cp run.rsp ${output}/s-process
-./run.sh ${output}
+for stage in h_burning he_burning c_burning ne_burning o_burning si_burning
+do
+  cd ${HOME}/input/$stage
+  ./run.sh ${output}
+  cp run.rsp ${HOME}/${output}/$stage
+done
 
 # Tar and zip model
 
-cd ../..
-cd ${out_dir}
-tar cvf ${model}.tar ${model}/h_burning/out.xml ${model}/he_burning/out.xml ${model}/s-process/out.xml ${model}/h_burning/run.rsp ${model}/he_burning/run.rsp ${model}/s-procss/run.rsp
+cd ${HOME}/${out_dir}
+
+tar cvf ${model}.tar -T /dev/null
+
+for stage in h_burning he_burning c_burning ne_burning o_burning si_burning
+do
+  tar rvf ${model}.tar ${model}/$stage/out.xml ${model}/$stage/run.rsp
+done
+
 gzip ${model}.tar

@@ -1,7 +1,7 @@
 bin_dir=../../single_zone
 out=../../$1/
-in_dir=${out}/h_burning
-out_dir=${out}/he_burning
+in_dir=${out}/ne_burning
+out_dir=${out}/o_burning
 
 mkdir -p ${out_dir}
 
