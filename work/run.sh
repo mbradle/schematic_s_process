@@ -1,7 +1,7 @@
-margs=1
+margs=2
 
 function example {
-    echo -e "example: $0 --model model1\n"
+    echo -e "example: $0 --model model1 --input_xml input_xml_file\n"
 }
 
 function usage {
@@ -12,8 +12,10 @@ function help {
   usage
     echo -e "MANDATORY:"
     echo -e "  --model  VAL  The output subdirectory"
+    echo -e "  --input_xml  VAL  The input XML file"
     echo -e "OPTION:"
-    echo -e "  --out_dir  VAL  The output directory (output)"
+    echo -e "  --out_dir  VAL  The output directory (default: output)"
+    echo -e "  --zone_xpath  VAL  The zone XPath (default: \"[last()]\")"
     echo -e "  -h, --help  Prints this help\n"
   example
 }
@@ -44,6 +46,7 @@ margs_precheck $# $1
 # Args while-loop
 
 out_dir=output
+zone_xpath="[last()]"
 
 while [ "$1" != "" ];
 do
@@ -51,8 +54,14 @@ do
    --model )  shift
               model=$1
               ;;
+   --input_xml )  shift
+              input_xml=$1
+              ;;
    --out_dir )  shift
               out_dir=$1
+              ;;
+   --zone_xpath )  shift
+              zone_xpath="$1"
               ;;
    -h   | --help )        help
                           exit
@@ -69,7 +78,9 @@ done
 
 # Mandatory paramter check
 
-margs_check ${model}
+echo "${input_xml}"
+
+margs_check ${model} ${input_xml}
 
 # Clone the necessary codes.
 
@@ -104,30 +115,16 @@ git checkout develop
 
 # Set key data
 
-output=${out_dir}/$model
+output=${HOME}/${out_dir}/$model
+mkdir -p ${output}
 
 # Download the data.
 
 make data
 
-# Run stages
+# Run s-process
 
-for stage in h_burning he_burning c_burning ne_burning o_burning si_burning
-do
-  cd ${HOME}/input/$stage
-  ./run.sh ${output}
-  cp run.rsp ${HOME}/${output}/$stage
-done
-
-# Tar and zip model
-
-cd ${HOME}/${out_dir}
-
-tar cvf ${model}.tar -T /dev/null
-
-for stage in h_burning he_burning c_burning ne_burning o_burning si_burning
-do
-  tar rvf ${model}.tar ${model}/$stage/out.xml ${model}/$stage/run.rsp
-done
-
-gzip ${model}.tar
+cp ${input_xml} ${output}/input.xml
+cp ${HOME}/input/s_process/run.rsp ${output}
+cd ${HOME}/input/s_process
+./run.sh ${output} ${zone_xpath}

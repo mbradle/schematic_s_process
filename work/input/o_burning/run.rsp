@@ -1,7 +1,0 @@
---network_xml ../../nucnet-tools-code/data_pub/my_net.xml
---zone_xpath "[last()]"
---nuc_xpath "[z <= 92]"
---t_end 3.15e7
---t9_0 2.1
---rho_0 1.5e6
---xml_steps 5
