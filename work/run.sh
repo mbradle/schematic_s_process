@@ -78,8 +78,6 @@ done
 
 # Mandatory paramter check
 
-echo "${input_xml}"
-
 margs_check ${model} ${input_xml}
 
 # Clone the necessary codes.
