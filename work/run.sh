@@ -125,4 +125,4 @@ make data
 cp ${input_xml} ${output}/input.xml
 cp ${HOME}/input/s_process/run.rsp ${output}
 cd ${HOME}/input/s_process
-./run.sh ${output} ${zone_xpath}
+./run.sh ${output} "${zone_xpath}"
