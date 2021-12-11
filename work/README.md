@@ -13,7 +13,7 @@ for the calculation.  To change that, use an XPath expression with the
 option *zone_xpath*.  For example, to use the zone labeled *label1="186"*in the
 input xml file, type
 
-**./run.sh --model model1 --input_xml `pwd`/input/example.xml --zone_xpath "[@label1='186']"**
+**./run.sh --model model1 --input_xml \`pwd\`/input/example.xml --zone_xpath "[@label1='186']"**
 
 The default is to choose the last zone in the input xml file.
 The output will be in the user-defined directory (default is *output*)
