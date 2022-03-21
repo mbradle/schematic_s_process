@@ -10,7 +10,7 @@ execute the code by typing, for example:
 where *input_xml_file* is the xml file used as input for the calculation.
 The script chooses the last zone in *input_xml_file* for the initial composition
 for the calculation.  To change that, use an XPath expression with the
-option *zone_xpath*.  For example, to use the zone labeled *label1="186"*in the
+option *zone_xpath*.  For example, to use the zone labeled *label1="186"* in the
 input xml file, type
 
 **./run.sh --model model1 --input_xml \`pwd\`/input/example.xml --zone_xpath "[@label1='186']"**
