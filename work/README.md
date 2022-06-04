@@ -5,15 +5,15 @@ file *run.rsp* in the *input/s_process* subdirectory
 for the single-zone calculations.  Once that step is done,
 execute the code by typing, for example:
 
-**./runs.sh --model model1 --input_xml input_xml_file**
+**./run.sh --model model1 --input_xml input_xml_file**
 
 where *input_xml_file* is the xml file used as input for the calculation.
-The script chooses the last zone in *input_xml_file* for the initial composition
+The script chooses by default the last zone in *input_xml_file* for the initial composition
 for the calculation.  To change that, use an XPath expression with the
-option *zone_xpath*.  For example, to use the zone labeled *label1="186"*in the
-input xml file, type
+option *zone_xpath*.  For example, to use the zone labeled *label1="186"* in the
+default input xml file *input/example.xml*, type
 
-**./run.sh --model model1 --input_xml `pwd`/input/example.xml --zone_xpath "[@label1='186']"**
+**./run.sh --model model1 --input_xml \`pwd\`/input/example.xml --zone_xpath "[@label1='186']"**
 
 The default is to choose the last zone in the input xml file.
 The output will be in the user-defined directory (default is *output*)
