@@ -56,6 +56,15 @@ for jz in range(y.shape[1]):
         if y_sum[jz, jn] > 0:
             mass_fractions[(nuc_dict[jz, ja], jz, ja)] = ja * y_sum[jz, jn]
 
+# Normalize mass fractions
+
+x = 0
+for m in mass_fractions:
+    x += mass_fractions[m]
+
+for m in mass_fractions:
+    mass_fractions[m] /= x
+
 zones["0"] = {'properties': properties, 'mass fractions': mass_fractions}
 
 new_xml.set_zone_data(zones)
