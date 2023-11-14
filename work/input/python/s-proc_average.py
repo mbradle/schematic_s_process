@@ -10,10 +10,14 @@ if len(sys.argv) != 4:
     print('  output_file = output xml file with averaged abundances\n')
     exit()
 
+# Properties.  These will be included in the output.
+
+props_list = [('exposure', 'n'), 'metallicity', 'scaled metallicity']
+
 xml = wx.Xml(sys.argv[1])
 nucs = xml.get_nuclide_data()
 reacs = xml.get_reaction_data()
-props = xml.get_properties_as_floats([('exposure', 'n')])
+props = xml.get_properties_as_floats(props_list)
 y = xml.get_all_abundances_in_zones()
 
 nuc_dict = {}
@@ -48,6 +52,10 @@ new_xml.set_reaction_data(reacs)
 zones = {}
 
 properties = {'tau_0': str(tau_0)}
+
+for prop in props_list:
+    properties[prop] = props[prop][len(props[prop]) - 1]
+
 mass_fractions = {}
 
 for jz in range(y.shape[1]):
@@ -55,6 +63,13 @@ for jz in range(y.shape[1]):
         ja = jz + jn
         if y_sum[jz, jn] > 0:
             mass_fractions[(nuc_dict[jz, ja], jz, ja)] = ja * y_sum[jz, jn]
+
+xsum = 0
+for value in mass_fractions.values():
+    xsum += value
+
+for value in mass_fractions.values():
+    value /= xsum
 
 zones["0"] = {'properties': properties, 'mass fractions': mass_fractions}
 
